@@ -148,6 +148,15 @@ class GoodsController extends Controller
         $model = new Brand;
         $brands = $model->getBrand();
 
-        return view('admin.goods.edit',['topCats'=>$topCats,'brands'=>$brands]);
+        $model = new Goods;
+        $data = $model->getFullInfo($_GET['id']);
+
+        return view('admin.goods.edit',['topCats'=>$topCats,'brands'=>$brands,'data'=>$data]);
+    }
+
+    // 执行商品修改
+    public function doEdit(Request $req){
+        $model = new Goods;
+        return $model->doEdit($req);
     }
 }

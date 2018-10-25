@@ -48,6 +48,8 @@ Route::get('/goods/ajax_get_cat','Admin\GoodsController@ajax_get_cat');
 Route::post('/goods/insert','Admin\GoodsController@insert');
 // 编辑商品
 Route::get('/goods/edit','Admin\GoodsController@edit');
+// 执行编辑
+Route::post('/goods/doEdit','Admin\GoodsController@doEdit');
 
 // 广告管理
 Route::get('/admin/ad_category','Admin\AdController@ad_category');

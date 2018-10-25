@@ -46,13 +46,13 @@
         <div style="clear:both"></div>
     </h1>
     <div class="main-div">
-		<form action="/goods/insert" method="post" name="theForm" enctype="multipart/form-data">
+		<form action="/goods/doEdit?id={{ $data['info']->id }}" method="post" name="theForm" enctype="multipart/form-data">
 			@csrf
             <table width="100%" id="general-table">
                 <tr>
                     <td class="label">商品名称</td>
                     <td>
-                        <input type='text' size="80" name='goods_name'>
+                        <input type='text' size="80" name='goods_name' value="{{ $data['info']->goods_name }}">
                         <font color="red">*</font>
                     </td>
                 </tr>
@@ -63,7 +63,7 @@
 						<font color="red">*</font>
 						<!-- 显示原图 -->
 						<div class="img-container clearfix">
-							<img id="image" src="" alt="Picture">
+							<img id="image" src="{{ $data['info']->md_logo }}" alt="Picture">
 						</div>
 						<!-- 预览图片 -->
 						<div class="docs-preview">
@@ -79,15 +79,18 @@
                 <tr>
                     <td class="label">是否上架</td>
                     <td>
-                        <input type="radio" name="is_on_sale" value="y" checked> 是
-                        <input type="radio" name="is_on_sale" value="n"> 否
+                        <input type="radio" name="is_on_sale" @if($data['info']->is_on_sale=='y') echo checked @endif value="y" > 是
+                        <input type="radio" name="is_on_sale" @if($data['info']->is_on_sale=='n') echo checked @endif value="n"> 否
                         <font color="red">*</font>
                     </td>
                 </tr>
                 <tr>
                     <td class="label">商品描述</td>
-                    <td id="content">
-						
+                    <td>
+                        <div  id="content">
+                            <?php echo $data['info']->describe ?>
+                        </div>
+                       
 					</td>
 					<textarea id="text1" style="display:none" name="describe"></textarea>
                 </tr>
@@ -96,7 +99,7 @@
                     <td>
                         <select name="cat1_id">
                             @foreach($topCats as $topCat)
-                            <option value="{{ $topCat->id }}">
+                            <option @if($data['info']->cat1_id == $topCat->id) echo selected @endif value="{{ $topCat->id }}">
                                 {{ $topCat->cat_name }}
                             </option>
                             @endforeach
@@ -135,63 +138,90 @@
 
             <h3>商品属性 <input id="btn-attr" type="button" value="添加一个属性"></h3>
             <div id="attr-container">
+                @foreach($data['attrs'] as $attr)
                 <table width="100%">
                     <tr>
                         <td class="label">属性名称:</td>
                         <td>
-                            <input type='text' size="80" name='attr_name[]'>
+                            <input type='text' size="80" name='attr_name[]' value="{{ $attr->attr_name }}">
                             <font color="red">*</font>
                         </td>
                     </tr>
                     <tr>
                         <td class="label">属性值:</td>
                         <td>
-                            <input type='text' size="80" name='attr_value[]'>
+                            <input type='text' size="80" name='attr_value[]' value="{{ $attr->attr_value }}">
                             <font color="red">*</font>
                         </td>
                     </tr>
-                    
+                    <tr>
+                        <td class="label"></td>
+                        <td>
+                            <input onclick="del_attr(this)" type="button" value="删除">
+                        </td>
+                    </tr>
                 </table>
+                @endforeach
             </div>
 
             <h3>商品图片 <input id="btn-image" type="button" value="添加一个图片"></h3>
+            <input type="hidden" name="del_image">
             <div id="image-container">
+                @foreach($data['images'] as $image)
                 <table width="100%">
                     <tr>
                         <td class="label"></td>
                         <td>
+                            <div class="img_preview">
+                                <img src="{{ $image->path }}" width="120" height="120" alt="">
+                            </div>
                             <input class="preview" type='file' name='image[]'>
                             <font color="red">*</font>
                         </td>
                     </tr>
+                    <tr>
+                        <td class="label"></td>
+                        <td>
+                            <input image_id="{{ $image->id }}" onclick="del_attr(this)" type="button" value="删除">
+                        </td>
+                    </tr>
                 </table>
+                @endforeach
             </div>
 
             <h3>SKU <input id="btn-sku" type="button" value="添加一个sku"></h3>
             <div id="sku-container">
+                @foreach($data['skus'] as $sku)
                 <table width="100%">
                     <tr>
                         <td class="label">SKU名称:</td>
                         <td>
-                            <input type='text' size="80" name='sku_name[]'>
+                            <input type='text' size="80" name='sku_name[]' value="{{ $sku->sku_name }}">
                             <font color="red">*</font>
                         </td>
                     </tr>
                     <tr>
                         <td class="label">库存量:</td>
                         <td>
-                            <input type='text' size="80" name='stock[]'>
+                            <input type='text' size="80" name='stock[]' value="{{ $sku->stock }}">
                             <font color="red">*</font>
                         </td>
                     </tr>
                     <tr>
                         <td class="label">价格:</td>
                         <td>
-                            ￥ <input type='text' size="10" name='price[]'> 元
+                            ￥ <input type='text' size="10" name='price[]' value="{{ $sku->price }}"> 元
                             <font color="red">*</font>
                         </td>
                     </tr>
+                    <tr>
+                        <td class="label"></td>
+                        <td>
+                            <input onclick="del_attr(this)" type="button" value="删除">
+                        </td>
+                    </tr>
                 </table>
+                @endforeach
             </div>
 
             <div class="button-div">
@@ -317,6 +347,10 @@
             $(this).before("<div class='img_preview'><img src='"+str+"' width='120' height='120'></div>");
         });
     })
+
+    // 二三级分类的ID
+    var cat2_id = "{{ $data['info']->cat2_id }}";
+    var cat3_id = "{{ $data['info']->cat3_id }}";
     $("select[name=cat1_id]").change(function () {
         var id = $(this).val();
         if (id != "") {
@@ -327,7 +361,11 @@
                 success: function (data) {
                     var str = "";
                     for (var i = 0; i < data.length; i++) {
-                        str += '<option value="' + data[i].id + '">' + data[i].cat_name + '</option>';
+                        
+                        if(data[i].id == cat2_id)
+                            str += '<option selected="selected" value="' + data[i].id + '">' + data[i].cat_name + '</option>';
+                        else
+                            str += '<option value="' + data[i].id + '">' + data[i].cat_name + '</option>';
                     }
                     // 把拼好的 option 放到第二个下拉框中
                     $("select[name=cat2_id]").html(str)
@@ -352,7 +390,10 @@
                 success: function (data) {
                     var str = "";
                     for (var i = 0; i < data.length; i++) {
-                        str += '<option value="' + data[i].id + '">' + data[i].cat_name + '</option>';
+                        if(data[i].id == cat3_id)
+                            str += '<option selected="selected" value="' + data[i].id + '">' + data[i].cat_name + '</option>';
+                        else
+                            str += '<option value="' + data[i].id + '">' + data[i].cat_name + '</option>';
                     }
                     // 把拼好的 option 放到第三个下拉框中
                     $("select[name=cat3_id]").html(str)
@@ -396,6 +437,15 @@
     function del_attr(o){
     
         if(confirm("确定要删除吗？")){
+            var imageId = $(o).attr('image_id');
+            if(imageId){
+                var oldId = $("input[name=del_image]").val();
+                if(oldId == ""){
+                    $("input[name=del_image]").val(imageId);
+                }else {
+                    $("input[name=del_image]").val(oldId +","+imageId);
+                }
+            }
             var table = $(o).parent().parent().parent().parent();
             table.prev("hr").remove();
             table.remove();

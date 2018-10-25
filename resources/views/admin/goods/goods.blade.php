@@ -84,7 +84,7 @@
 		                                  	
 		                                  </td>		                                  
 		                                  <td class="text-center">                                          
-											   <button type="button" class="btn bg-olive btn-xs" ><a href="/goods/edit" style="color:#fff">修改</a></button> 
+											   <button type="button" class="btn bg-olive btn-xs" ><a href="/goods/edit?id={{ $good->id }}" style="color:#fff">修改</a></button> 
 											   <button onclick="return confirm('确定要删除吗？');" type="button" style="background-color:#d00" class="btn btn-xs" > <a href="" style="color:#fff">删除</a> </button>                                           
 		                                  </td>
 			                          </tr>
