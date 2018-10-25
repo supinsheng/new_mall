@@ -8,6 +8,7 @@ use App\Libs\Uploader;
 use DB;
 use App\Model\Brand;
 use App\Model\GoodsCat;
+use App\Model\Goods;
 
 class GoodsController extends Controller
 {
@@ -61,7 +62,9 @@ class GoodsController extends Controller
 
     public function goods(){
 
-        return view('admin.goods.goods');
+        $model = new Goods;
+        $goods = $model->getGoods();
+        return view('admin.goods.goods',['goods'=>$goods]);
     }
 
     // 保存商品品牌
@@ -113,6 +116,38 @@ class GoodsController extends Controller
     // 添加商品
     public function add(){
 
-        return view('admin.goods.add');
+        $model = new GoodsCat;
+        $topCats = $model->getCatByPid();
+
+        $model = new Brand;
+        $brands = $model->getBrand();
+
+        return view('admin.goods.add',['topCats'=>$topCats,'brands'=>$brands]);
+    }
+
+    // ajax根据父级id获取分类
+    public function ajax_get_cat(){
+
+        $parent_id = $_GET['id'];
+        $model = new GoodsCat;
+        echo $model->getCatByPid($parent_id);
+    }
+
+    // 执行商品添加
+    public function insert(Request $req){
+
+        $model = new Goods;
+        return $model->insert($req);
+    }
+
+    // 编辑商品
+    public function edit(){
+
+        $model = new GoodsCat;
+        $topCats = $model->getCatByPid();
+        $model = new Brand;
+        $brands = $model->getBrand();
+
+        return view('admin.goods.edit',['topCats'=>$topCats,'brands'=>$brands]);
     }
 }

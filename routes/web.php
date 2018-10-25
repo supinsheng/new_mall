@@ -44,6 +44,10 @@ Route::get('/goods/delCat','Admin\GoodsController@delCat');
 // 商品亲自管理
 // 添加商品
 Route::get('/goods/add','Admin\GoodsController@add');
+Route::get('/goods/ajax_get_cat','Admin\GoodsController@ajax_get_cat');
+Route::post('/goods/insert','Admin\GoodsController@insert');
+// 编辑商品
+Route::get('/goods/edit','Admin\GoodsController@edit');
 
 // 广告管理
 Route::get('/admin/ad_category','Admin\AdController@ad_category');

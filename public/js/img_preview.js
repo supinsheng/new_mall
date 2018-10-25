@@ -5,10 +5,10 @@ $(".preview").change(function(){
     // 转成字符串
     var str = getObjectUrl(file);
     // 先删除上一个
-    $(this).next('.img_preview').remove();
+    $(this).prev('.img_preview').remove();
 
     // 在框的前面放一个图片
-    $(this).after("<div class='img_preview'><img src='"+str+"' width='120' height='120'></div>");
+    $(this).before("<div class='img_preview'><img src='"+str+"' width='120' height='120'></div>");
 })
 
 // 把图片转成一个字符串

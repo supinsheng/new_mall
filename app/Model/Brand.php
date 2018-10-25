@@ -49,7 +49,7 @@ class Brand extends Model
     }
 
     // 删除商品品牌
-    public function delBrand(){
+    public function delBrand($id){
 
         $path = DB::table('brand')->where('id',$id)->value('logo');
         @unlink(ROOT.'/public/'.$path);
@@ -61,5 +61,11 @@ class Brand extends Model
 
             return back()->with('status', '删除失败！');
         }
+    }
+
+    // 获取所有的品牌
+    public function getBrand(){
+
+        return DB::table('brand')->get();
     }
 }

@@ -45,7 +45,7 @@
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#addModal" ><i class="fa fa-file-o"></i> 新建</button>
-                                        <button type="button" class="btn btn-default" title="刷新" ><i class="fa fa-check"></i> 刷新</button>
+                                        <button type="button" class="btn btn-default" title="刷新"  onclick="window.location.reload();"><i class="fa fa-check"></i> 刷新</button>
                                        
                                     </div>
                                 </div>

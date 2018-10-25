@@ -21,7 +21,7 @@
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
-                        <h3 class="box-title">商品审核</h3>
+                        <h3 class="box-title">商品管理</h3>
                     </div>
 
                     <div class="box-body">
@@ -33,8 +33,8 @@
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default" title="添加商品" ><i class="fa fa-trash-o"></i> <a href="/goods/add">添加商品</a> </button>                                
-                                        <button type="button" class="btn btn-default" title="刷新" ><i class="fa fa-refresh"></i> 刷新</button>
+                                        <button type="button" class="btn btn-default" title="添加商品"  onclick="javascript:window.location.href='/goods/add';" ><i class="fa fa-trash-o"></i>添加商品</button>                                
+                                        <button type="button" class="btn btn-default" title="刷新"  onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
                                     </div>
                                 </div>
                             </div>
@@ -55,73 +55,46 @@
 			                              </th> 
 										  <th class="sorting_asc">商品ID</th>
 									      <th class="sorting">商品名称</th>
-									      <th class="sorting">商品价格</th>
 									      <th class="sorting">一级分类</th>
 									      <th class="sorting">二级分类</th>
-									      <th class="sorting">三级分类</th>
-									      <th class="sorting">状态</th>									     						
+										  <th class="sorting">三级分类</th>
+									      <th class="sorting">品牌</th>
+									      <th class="sorting">是否上架</th>									     						
 					                      <th class="text-center">操作</th>
 			                          </tr>
 			                      </thead>
 			                      <tbody>
+									  @foreach($goods as $good)
 			                          <tr>
 			                              <td><input type="checkbox"></td>			                              
-				                          <td>1</td>
-									      <td>华为Mete8</td>
-									      <td>3020</td>
-									      <td>数码产品</td>
-									      <td>手机</td>
-									      <td>国产手机</td>
+				                          <td>{{ $good->id }}</td>
+									      <td>{{ $good->goods_name }}</td>
+									      <td>{{ explode(',',$good->cat_name)[0] }}</td>
+									      <td>{{ explode(',',$good->cat_name)[1] }}</td>
+									      <td>{{ explode(',',$good->cat_name)[2] }}</td>
+									      <td>{{ $good->brand_name }}</td>
 		                                  <td>		                                  
 		                                  	<span>
-		                                  		申请中
+											  @if($good->is_on_sale == 'y')
+											  上架
+											  @else
+											  下架
+											  @endif
 		                                  	</span>
 		                                  	
 		                                  </td>		                                  
 		                                  <td class="text-center">                                          
-		                                 	  <button type="button" class="btn bg-olive btn-xs" >详情</button>                  
+											   <button type="button" class="btn bg-olive btn-xs" ><a href="/goods/edit" style="color:#fff">修改</a></button> 
+											   <button onclick="return confirm('确定要删除吗？');" type="button" style="background-color:#d00" class="btn btn-xs" > <a href="" style="color:#fff">删除</a> </button>                                           
 		                                  </td>
 			                          </tr>
-									  <tr>
-			                              <td><input type="checkbox"></td>			                              
-				                          <td>2</td>
-									      <td>三星手雷</td>
-									      <td>1080</td>
-									      <td>数码产品</td>
-									      <td>手机</td>
-									      <td>进口手机</td>
-		                                  <td>	                                 
-		                                  	
-		                                  	<span>
-		                                  		已驳回
-		                                  	</span>
-		                                  </td>		                                  
-		                                  <td class="text-center">                                          
-		                                 	  <button type="button" class="btn bg-olive btn-xs" >详情</button>                  
-		                                  </td>
-			                          </tr>
-									   <tr>
-			                              <td><input type="checkbox"></td>			                              
-				                          <td>3</td>
-									      <td>小米6S</td>
-									      <td>999</td>
-									      <td>数码产品</td>
-									      <td>手机</td>
-									      <td>国产手机</td>
-		                                  <td>	                                 
-		                                  	
-		                                  	<span>
-		                                  		审核通过
-		                                  	</span>
-		                                  </td>		                                  
-		                                  <td class="text-center">                                          
-		                                 	  <button type="button" class="btn bg-olive btn-xs" >详情</button>                  
-		                                  </td>
-			                          </tr>
+									  @endforeach
 			                      </tbody>
 			                  </table>
 			                  <!--数据列表/-->                        
-							  
+							  <div style="width:90%;text-align:right">                    
+							  	{{ $goods->links() }}
+							  </div>
 							 
                         </div>
                         <!-- 数据表格 /-->
@@ -129,7 +102,9 @@
                         
                      </div>
                     <!-- /.box-body -->
-        
+					@if (session('status'))
+						<script>alert( '{{ session('status') }}');</script>
+					@endif
 </body>
 
 </html>

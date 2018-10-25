@@ -65,4 +65,11 @@ class GoodsCat extends Model
             return back()->with('status', '删除失败！');
         }
     }
+
+    // 根据父级id获取商品分类
+    public function getCatByPid($parent_id=0){
+
+        $cats = DB::table('goods_category')->where('parent_id',$parent_id)->get();
+        return $cats;
+    }
 }
