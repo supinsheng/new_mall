@@ -337,19 +337,7 @@
 				                <a href="/admin/brand" target="iframe">
 				                    <i class="fa fa-circle-o"></i>品牌管理
 				                </a>
-				            </li>
-							<li id="admin-login">
-				                <a href="/admin/specification" target="iframe">
-				                    <i class="fa fa-circle-o"></i>规格管理
-				                </a>
-				            </li>							
-							<li id="admin-login">
-				                <a href="/admin/type_template" target="iframe">
-				                    <i class="fa fa-circle-o"></i>模板管理
-				                </a>
-				            </li>
-							
-							
+				            </li>		
 				        </ul>                        
 				    </li>
 					
@@ -373,6 +361,36 @@
 				                    <i class="fa fa-circle-o"></i>广告管理
 				                </a>
 				            </li>
+				        </ul>                        
+				    </li>
+
+                    <li class="treeview">
+				        <a href="#">
+				            <i class="fa fa-folder"></i> 
+				            <span>管理员模块</span>
+				            <span class="pull-right-container">
+				       			<i class="fa fa-angle-left pull-right"></i>
+				   		 	</span>
+				        </a>
+				        <ul class="treeview-menu">
+
+                            <li id="admin-login">
+				                <a href="/admin/admin" target="iframe">
+				                    <i class="fa fa-circle-o"></i>管理员管理
+				                </a>
+                            </li>
+                            
+                            <li id="admin-login">
+				                <a href="/admin/role" target="iframe">
+				                    <i class="fa fa-circle-o"></i>角色管理
+				                </a>
+				            </li>
+								
+				            <li id="admin-login">
+				                <a href="/admin/privilege" target="iframe">
+				                    <i class="fa fa-circle-o"></i>权限管理
+				                </a>
+				            </li>		
 				        </ul>                        
 				    </li>
 				    <!-- 菜单 /-->

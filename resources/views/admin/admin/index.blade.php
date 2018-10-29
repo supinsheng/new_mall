@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>品牌管理</title>
+    <title>管理员管理</title>
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
     <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
@@ -16,7 +16,7 @@
 <body class="hold-transition skin-red sidebar-mini">
   <!-- .box-body -->
                     <div class="box-header with-border">
-                        <h3 class="box-title">品牌管理</h3>
+                        <h3 class="box-title">管理员管理</h3>
                     </div>
 
                     <div class="box-body">
@@ -44,21 +44,21 @@
 			                  <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
 			                      <thead>
 			                          <tr>
-										  <th class="sorting_asc">品牌ID</th>
-									      <th class="sorting">品牌名称</th>									      
-									      <th class="sorting">品牌LOGO</th>									     				
+										  <th class="sorting_asc">管理员ID</th>
+									      <th class="sorting">管理员名称</th>									      
+									      <th class="sorting">管理员角色</th>									     				
 					                      <th class="text-center">操作</th>
 			                          </tr>
 			                      </thead>
 			                      <tbody>
-								  	@foreach($brands as $brand)
+								  	@foreach($admins as $admin)
 			                          <tr>			                              
-				                          <td>{{ $brand->id }}</td>
-									      <td>{{ $brand->brand_name }}</td>									     
-		                                  <td><img src="{{ $brand->logo }}" width="100" height="60" alt=""></td>		                                 
+				                          <td>{{ $admin->id }}</td>
+									      <td>{{ $admin->username }}</td>									     
+		                                  <td>{{ $admin->role_name }}</td>		                                 
 		                                  <td class="text-center">                                           
-											   <button onclick="return confirm('请注意！！！修改品牌对应商品的品牌也会改变！！！');" type="button" class="btn bg-olive btn-xs editBrand" data-toggle="modal" data-target="#editModal"  value="{{ $brand->id }}">修改</button>
-											   <button onclick="return confirm('删除该品牌会删除该品牌下的所有商品，请三思！<?php echo '\r\n' ?>确定要删除吗？');" type="button" style="background-color:#d00" class="btn btn-xs" > <a href="/goods/delBrand?id={{ $brand->id }}" style="color:#fff">删除</a> </button>                                           
+											   <button type="button" class="btn bg-olive btn-xs editBrand" data-toggle="modal" data-target="#editModal"  value="{{ $admin->id }}">修改</button>
+											   <button onclick="return confirm('确定要删除吗？');" type="button" style="background-color:#d00" class="btn btn-xs" > <a href="/admin/delAdmin?id={{ $admin->id }}" style="color:#fff">删除</a> </button>                                           
 		                                  </td>
 			                          </tr>
 									@endforeach
@@ -66,7 +66,7 @@
 			                  </table>
 							  <!--数据列表/-->   
 							  <div style="width:90%;text-align:right">                    
-							  	{{ $brands->links() }}
+							  	
 							  </div> 
 							 
                         </div>
@@ -84,19 +84,27 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="myModalLabel">品牌添加</h3>
+			<h3 id="myModalLabel">管理员添加</h3>
 		</div>
-		<form action="/goods/saveBrand" method="post" enctype="multipart/form-data">
+		<form action="/admin/saveAdmin" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="modal-body">		
 			<table class="table table-bordered table-striped"  width="800px">
 		      	<tr>
-		      		<td>品牌名称</td>
-		      		<td><input  class="form-control" name="brand_name" placeholder="品牌名称" >  </td>
-		      	</tr>		      	
+		      		<td>管理员名称</td>
+		      		<td><input  class="form-control" name="username" placeholder="管理员名称" >  </td>
+		      	</tr>	
+				<tr>
+		      		<td>管理员密码</td>
+		      		<td><input type="password" class="form-control" name="password" placeholder="管理员密码" >  </td>
+		      	</tr>	      	
 		      	<tr>
-		      		<td>品牌LOGO</td>
-		      		<td><input type="file" name="logo" class="preview"></td>
+		      		<td>拥有角色</td>
+		      		<td>
+					  @foreach($roles as $role)
+					  <input type="checkbox" name="role_id[]" value="{{ $role->id }}">{{ $role->role_name }} <br><br>
+					  @endforeach
+					</td>
 		      	</tr>		      	
 			 </table>				
 		</div>
@@ -115,23 +123,29 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="myModalLabel">品牌编辑</h3>
+			<h3 id="myModalLabel">管理员编辑</h3>
 		</div>
 		<form action="" method="post" enctype="multipart/form-data">
 		@csrf
 		<div class="modal-body">		
 			<table class="table table-bordered table-striped"  width="800px">
-		      	<tr>
-		      		<td>品牌名称</td>
-		      		<td><input  class="form-control" name="brand_name" >  </td>
-		      	</tr>		      	
-		      	<tr>
-		      		<td>品牌LOGO</td>
+				<tr>
+		      		<td>管理员名称</td>
+		      		<td><input  class="form-control" name="username" placeholder="管理员名称" >  </td>
+		      	</tr>	
+				<tr>
+		      		<td>管理员密码</td>
+		      		<td><input type="password" class="form-control" name="password" placeholder="管理员密码" >
+					   </td>
+		      	</tr>	
+				<tr>
+		      		<td>拥有角色</td>
 		      		<td>
-					  	<div class='img_preview'><img src='' width='120' height='120'></div>
-						<input type="file" name="logo" class="preview">
+					  @foreach($roles as $role)
+					  <input type="checkbox" name="role_id[]" value="{{ $role->id }}">{{ $role->role_name }} <br><br>
+					  @endforeach
 					</td>
-		      	</tr>		      	
+		      	</tr>	      	
 			 </table>				
 		</div>
 		<div class="modal-footer">		
@@ -157,13 +171,19 @@
 			
 		$.ajax({
 			type: 'GET',
-			url: '/goods/getBrandByAjax?id='+id,
+			url: '/admin/getAdminByAjax?id='+id,
 			dataType: 'json',
 			success: function(data){
-
-				$("#editModal").find("input[name=brand_name]").val(data.brand_name);
-				$("#editModal").find("img").attr("src",data.logo);
-				$("#editModal").find("form").attr("action","/goods/editBrand?id="+id);
+				console.log(data);
+				$("#editModal").find("input[name=username]").val(data[0].username);
+				$("#editModal").find("input[name=password]").val(data[0].password);
+				for(var i=0;i<$("#editModal").find("input[name='role_id[]']").length;i++){
+					$("#editModal").find("input[name='role_id[]']")[i].checked = '';
+					if(($.inArray($("#editModal").find("input[name='role_id[]']")[i].value,data[0].role_id))!=-1){
+						$("#editModal").find("input[name='role_id[]']")[i].checked = 'checked';
+					}
+				}
+				$("#editModal").find("form").attr("action","/admin/editAdmin?id="+id);
 			}
 		})
 	})

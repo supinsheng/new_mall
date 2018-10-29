@@ -76,8 +76,8 @@
 									      <td>{{ $cat->parent_id }}</td>									      
 									      <td>{{ $cat->path }}</td>									      
 		                                  <td class="text-center">                                     
-		                                 	  <button type="button" class="btn bg-olive btn-xs editCat" data-toggle="modal" data-target="#editModal" value="{{ $cat->id }}">修改</button>    
-											  <button onclick="return confirm('确定要删除吗？');" type="button" style="background-color:#d00" class="btn btn-xs" > <a href="/goods/delCat?id={{ $cat->id }}" style="color:#fff">删除</a> </button>                                       
+		                                 	  <button onclick="return confirm('请注意！！！修改分类对应商品的分类也会改变！！！<?php echo '\r' ?>修改分类只能修改分类的名称，不会修改分类的级别！！！<?php echo '\r' ?>若需要修改级别，可删除该分类，再重新添加！！！');" type="button" class="btn bg-olive btn-xs editCat" data-toggle="modal" data-target="#editModal" value="{{ $cat->id }}">修改</button>    
+											  <button onclick="return confirm('删除该分类会删除该分类下所有商品和所有子分类，请三思！<?php echo '\r\n' ?>确定要删除吗？');" type="button" style="background-color:#d00" class="btn btn-xs" > <a href="/goods/delCat?id={{ $cat->id }}" style="color:#fff">删除</a> </button>                                       
 		                                  </td>
 									  </tr>
 									  @endforeach
@@ -152,7 +152,7 @@
 		<div class="modal-body">							
 			
 			<table class="table table-bordered table-striped"  width="800px">
-				<tr>
+				<!-- <tr>
 		      		<td>上级商品分类</td>
 		      		<td>
 		      		  	<select name="parent_id">
@@ -165,7 +165,7 @@
 							@endforeach
 						</select>
 		      		</td>
-		      	</tr>
+		      	</tr> -->
 		      	<tr>
 		      		<td>商品分类名称</td>
 		      		<td><input  class="form-control" name="cat_name" value="" placeholder="商品分类名称">  </td>
@@ -198,14 +198,14 @@
 			success: function(data){
 
 				for(var i=0;i<$("#editModal").find("option").length;i++){
-					// console.log($("#editModal").find("option")[i].value);
-					var value = $("#editModal").find("option")[i].value;
-					value = value.split("|");
-					// console.log(data.parent_id+'|'+data.path);
-					if(data.parent_id == value[0]){
+					// // console.log($("#editModal").find("option")[i].value);
+					// var value = $("#editModal").find("option")[i].value;
+					// value = value.split("|");
+					// // console.log(data.parent_id+'|'+data.path);
+					// if(data.parent_id == value[0]){
 						
-						$("#editModal").find("option")[i].selected='selected';
-					}
+					// 	$("#editModal").find("option")[i].selected='selected';
+					// }
 				}
 			
 				$("#editModal").find("input[name=cat_name]").val(data.cat_name);

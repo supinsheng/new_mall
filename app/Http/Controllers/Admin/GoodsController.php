@@ -156,7 +156,15 @@ class GoodsController extends Controller
 
     // 执行商品修改
     public function doEdit(Request $req){
+        
         $model = new Goods;
         return $model->doEdit($req);
+    }
+
+    // 删除商品
+    public function delGood(){
+        $id = $_GET['id'];
+        $model = new Goods;
+        return $model->delGood($id);
     }
 }

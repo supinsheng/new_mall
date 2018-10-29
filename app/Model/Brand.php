@@ -11,6 +11,10 @@ class Brand extends Model
     // 保存商品品牌
     public function saveBrand(){
 
+        if($_POST['brand_name'] == '' || $_FILES['logo']['error'] == 4){
+            return back()->with('status','添加失败！数据填写不完整！');
+        }
+
         $upload = Uploader::make();
         $logo = '/uploads/'.$upload->upload('logo','brand');
 
@@ -53,7 +57,7 @@ class Brand extends Model
 
         $path = DB::table('brand')->where('id',$id)->value('logo');
         @unlink(ROOT.'/public/'.$path);
-
+        DB::table('goods')->where('brand_id',$id)->delete();
         if(DB::table('brand')->where('id',$id)->delete()){
 
             return redirect('/admin/brand')->with('status', '删除成功！');

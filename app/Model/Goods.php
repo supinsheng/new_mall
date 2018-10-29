@@ -254,4 +254,33 @@ class Goods extends Model
             return back()->with('status','修改失败，数据填写不完整！');
         }
     }
+
+    // 删除商品
+    public function delGood($id){
+
+        $this->_before_delete($id);
+        $good = DB::table('goods')->where('id',$id)->first();
+        @unlink(ROOT.'/public'.$good->logo);
+        @unlink(ROOT.'/public'.$good->sm_logo);
+        @unlink(ROOT.'/public'.$good->md_logo);
+        @unlink(ROOT.'/public'.$good->bg_logo);
+        if(DB::table('goods')->where('id',$id)->delete()){
+            return back()->with('status','删除成功！');
+        }
+    }
+
+    public function _before_delete($good_id){
+    
+        // 删除属性
+        DB::table('goods_attribute')->where('goods_id',$good_id)->delete();
+        // 删除SKU
+        DB::table('goods_sku')->where('goods_id',$good_id)->delete();
+        // 先删除本地的图片
+        $images = DB::table('goods_image')->where('goods_id',$good_id)->get();
+        foreach($images as $image){
+            @unlink(ROOT.'/public'.$image->path);
+        }
+        // 删除图片
+        DB::table('goods_image')->where('goods_id',$good_id)->delete();
+    }
 }

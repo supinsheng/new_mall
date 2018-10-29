@@ -4,11 +4,16 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use App\Model\Goods;
 
 class GoodsCat extends Model
 {
     // 添加商品分类
     public function saveCat($req){
+
+        if($req->cat_name == null){
+            return back()->with('status','添加失败！数据填写不完整！');
+        }
 
         $data = explode('|',$req->parent_id);
         
@@ -56,9 +61,25 @@ class GoodsCat extends Model
 
     // 删除商品分类
     public function delCat($id){
-
+        
         $num = DB::table('goods_category')->where('id',$id)->delete();
+        $childrens = DB::table('goods_category')->where('parent_id',$id)->get();
+        if(count($childrens)>0){
+            foreach($childrens as $children){
+                DB::table('goods_category')->where('id',$children->id)->delete();
+                DB::table('goods_category')->where('parent_id',$children->id)->delete();
+            }
+        }
+        
         if($num){
+
+            $model = new Goods;
+            $ids = DB::table('goods')->where('cat1_id',$id)->orWhere('cat2_id',$id)->orWhere('cat3_id',$id)->pluck('id');
+            if(count($ids)>0){
+                foreach($ids as $id){
+                    $model->delGood($id);
+                }
+            }
 
             return redirect('/admin/item_cat')->with('status', '删除成功！');
         }else {
