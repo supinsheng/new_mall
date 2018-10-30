@@ -81,6 +81,8 @@ class AdController extends Controller
 
     // 删除广告
     public function delAd(){
+        $path = DB::table('ad')->where('id',$_GET['id'])->value('image');
+        @unlink(ROOT.'/public/'.$path);
         DB::table('ad')->where('id',$_GET['id'])->delete();
         return back()->with('status','删除成功！');
     }
