@@ -275,7 +275,7 @@
                                         <a href="#" class="btn btn-default btn-flat">修改密码</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">注销</a>
+                                        <a href="/admin/logout" class="btn btn-default btn-flat">注销</a>
                                     </div>
                                 </li>
                             </ul>
@@ -311,6 +311,7 @@
                     <!-- <li id="admin-index"><a href="/admin/index"><i class="fa fa-dashboard"></i> <span>首页</span></a></li> -->
 
 				    <!-- 菜单 -->
+                    @if(session('url_path') && (in_array('/admin/goods',session('url_path')) || in_array('/admin/item_cat',session('url_path')) || in_array('/admin/brand',session('url_path')) ) || session('root') == true)
 					<li class="treeview">
 				        <a href="#">
 				            <i class="fa fa-folder"></i> 
@@ -320,27 +321,60 @@
 				   		 	</span>
 				        </a>
 				        <ul class="treeview-menu">
-
+                            @if(session('url_path') && in_array('/admin/goods',session('url_path')) || session('root')==true)
                             <li id="admin-login">
 				                <a href="/admin/goods" target="iframe">
 				                    <i class="fa fa-circle-o"></i>商品管理
 				                </a>
                             </li>
-                            
+                            @endif
+                            @if(session('url_path') && in_array('/admin/item_cat',session('url_path')) || session('root')==true)
                             <li id="admin-login">
 				                <a href="/admin/item_cat" target="iframe">
 				                    <i class="fa fa-circle-o"></i>分类管理
 				                </a>
 				            </li>
-				
+                            @endif
+                            @if(session('url_path') && in_array('/admin/brand',session('url_path')) || session('root')==true)
 				            <li id="admin-login">
 				                <a href="/admin/brand" target="iframe">
 				                    <i class="fa fa-circle-o"></i>品牌管理
 				                </a>
-				            </li>		
+				            </li>	
+                            @endif	
 				        </ul>                        
 				    </li>
-					
+					@endif
+
+                    @if(session('url_path') && (in_array('/admin/article',session('url_path')) || in_array('/admin/article_cat',session('url_path'))) || session('root') == true)
+					<li class="treeview">
+				        <a href="#">
+				            <i class="fa fa-folder"></i> 
+				            <span>文章管理</span>
+				            <span class="pull-right-container">
+				       			<i class="fa fa-angle-left pull-right"></i>
+				   		 	</span>
+				        </a>
+				        <ul class="treeview-menu">
+                            @if(session('url_path') && in_array('/admin/article',session('url_path')) || session('root')==true)
+							<li id="admin-login">
+				                <a href="/admin/article" target="iframe">
+				                    <i class="fa fa-circle-o"></i>文章管理
+				                </a>
+				            </li>
+                            @endif
+                            @if(session('url_path') && in_array('/admin/article_cat',session('url_path')) || session('root')==true)
+				            <li id="admin-login">
+				                <a href="/admin/article_cat" target="iframe">
+				                    <i class="fa fa-circle-o"></i>文章类型管理
+				                </a>
+				            </li>
+                            @endif
+				        </ul>                        
+				    </li>
+                    @endif
+
+                    @if(session('url_path') && (in_array('/admin/ad_category',session('url_path')) || in_array('/admin/ad',session('url_path'))) || session('root') == true)
 					<li class="treeview">
 				        <a href="#">
 				            <i class="fa fa-folder"></i> 
@@ -350,20 +384,24 @@
 				   		 	</span>
 				        </a>
 				        <ul class="treeview-menu">
-				
+                            <!-- @if(session('url_path') && in_array('/admin/ad_category',session('url_path')) || session('root')==true)
 				            <li id="admin-login">
 				                <a href="/admin/ad_category" target="iframe">
 				                    <i class="fa fa-circle-o"></i>广告类型管理
 				                </a>
 				            </li>
+                            @endif -->
+                            @if(session('url_path') && in_array('/admin/ad',session('url_path')) || session('root')==true)
 							<li id="admin-login">
 				                <a href="/admin/ad" target="iframe">
 				                    <i class="fa fa-circle-o"></i>广告管理
 				                </a>
 				            </li>
+                            @endif
 				        </ul>                        
 				    </li>
-
+                    @endif
+                    @if(session('url_path') && (in_array('/admin/admin',session('url_path')) || in_array('/admin/role',session('url_path')) || in_array('/admin/privilege',session('url_path')) ) || session('root') == true)
                     <li class="treeview">
 				        <a href="#">
 				            <i class="fa fa-folder"></i> 
@@ -373,26 +411,31 @@
 				   		 	</span>
 				        </a>
 				        <ul class="treeview-menu">
-
+                            @if(session('url_path') && in_array('/admin/admin',session('url_path')) || session('root')==true)
                             <li id="admin-login">
 				                <a href="/admin/admin" target="iframe">
 				                    <i class="fa fa-circle-o"></i>管理员管理
 				                </a>
                             </li>
-                            
+                            @endif
+                            @if(session('url_path') && in_array('/admin/role',session('url_path')) || session('root')==true)
                             <li id="admin-login">
 				                <a href="/admin/role" target="iframe">
 				                    <i class="fa fa-circle-o"></i>角色管理
 				                </a>
 				            </li>
-								
+                            @endif
+                            @if(session('url_path') && in_array('/admin/privilege',session('url_path')) || session('root')==true)
 				            <li id="admin-login">
 				                <a href="/admin/privilege" target="iframe">
 				                    <i class="fa fa-circle-o"></i>权限管理
 				                </a>
-				            </li>		
+				            </li>	
+                            @endif	
 				        </ul>                        
 				    </li>
+                    @endif
+                  
 				    <!-- 菜单 /-->
 
                 </ul>

@@ -126,7 +126,7 @@
                     <td>
                         <select name="brand_id">
                             @foreach($brands as $brand)
-                            <option value="{{ $brand->id }}">
+                            <option @if($data['info']->brand_id==$brand->id) echo selected @endif value="{{ $brand->id }}">
                                 {{ $brand->brand_name }}
                             </option>
                             @endforeach

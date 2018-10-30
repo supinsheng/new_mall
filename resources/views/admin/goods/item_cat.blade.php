@@ -103,7 +103,7 @@
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<h3 id="myModalLabel">商品分类添加</h3>
 		</div>
-		<form action="/goods/saveCat" method="post">
+		<form action="/goods/saveCat" method="post">	
 		@csrf
 		<div class="modal-body">							
 			
@@ -117,7 +117,6 @@
 								@if(count(explode('-',$cat->path)) < 4)
 								<option value="{{ $cat->id }}|{{ $cat->path }}">{{ str_repeat('-',8*(count(explode('-',$cat->path))-2)).$cat->cat_name }}</option>		
 								@endif
-								
 							@endforeach
 						</select>
 		      		</td>

@@ -33,10 +33,10 @@
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
-                                        <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>
-                                        <button type="button" class="btn btn-default" title="开启" onclick='confirm("你确认要开启吗？")'><i class="fa fa-check"></i> 开启</button>
-                                        <button type="button" class="btn btn-default" title="屏蔽" onclick='confirm("你确认要屏蔽吗？")'><i class="fa fa-ban"></i> 屏蔽</button>
+                                        <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#addModal" ><i class="fa fa-file-o"></i> 新建</button>
+                                        <!-- <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button> -->
+                                        <!-- <button type="button" class="btn btn-default" title="开启" onclick='confirm("你确认要开启吗？")'><i class="fa fa-check"></i> 开启</button> -->
+                                        <!-- <button type="button" class="btn btn-default" title="屏蔽" onclick='confirm("你确认要屏蔽吗？")'><i class="fa fa-ban"></i> 屏蔽</button> -->
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
                                     </div>
                                 </div>
@@ -56,31 +56,34 @@
 			                                  <input id="selall" type="checkbox" class="icheckbox_square-blue">
 			                              </th> 
 										  <th class="sorting_asc">广告ID</th>
-									      <th class="sorting">分类ID</th>
 									      <th class="sorting">标题</th>
 									      <th class="sorting">URL</th>		
 									      <th class="sorting">图片</th>	
-									      <th class="sorting">排序</th>		
-									      <th class="sorting">是否有效</th>											     						      							
+									      <th class="sorting">是否显示</th>											     						      							
 					                      <th class="text-center">操作</th>
 			                          </tr>
 			                      </thead>
 			                      <tbody>
+								  @foreach($ads as $ad)
 			                          <tr>
 			                              <td><input  type="checkbox"></td>			                              
-				                          <td>1</td>
-									      <td>1</td>
-									      <td>促销海报1</td>
-									      <td>http://wwww.hb.com/hd1.html</td>
+				                          <td>{{ $ad->id }}</td>
+									      <td>{{ $ad->title }}</td>
+									      <td>{{ $ad->link }}</td>
 									      <td>
-									      	<img alt="" src="" width="100px" height="50px">
+									      	<img src="{{ $ad->image }}" width="100px" height="50px">
 									      </td>
-									      <td>1</td>
-									      <td>有效</td>									     								     
+									      @if($ad->is_show == 'y')
+									      <td>显示</td>	
+										  @else
+										  <td>不显示</td>
+										  @endif								     								     
 		                                  <td class="text-center">                                           
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal">修改</button>                                           
+		                                 	  <button type="button" class="btn bg-olive btn-xs editAd" data-toggle="modal" data-target="#editModal" value="{{ $ad->id }}">修改</button>         
+											   <button onclick="return confirm('确定要删除吗？');" type="button" style="background-color:#d00" class="btn btn-xs" > <a href="/ad/delAd?id={{ $ad->id }}" style="color:#fff">删除</a> </button>                                  
 		                                  </td>
 			                          </tr>
+									@endforeach
 			                      </tbody>
 			                  </table>
 			                  <!--数据列表/--> 
@@ -90,6 +93,59 @@
                     <!-- /.box-body -->
 
 		
+<!-- 添加窗口 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">广告添加</h3>
+		</div>
+		<form action="/ad/saveAd" method="post" enctype="multipart/form-data">
+		@csrf
+		<div class="modal-body">							
+			
+			<table class="table table-bordered table-striped"  width="800px">
+				
+		      	<tr>
+		      		<td>标题</td>
+		      		<td><input name="title" class="form-control" placeholder="标题" >  </td>
+		      	</tr>
+			    <tr>
+		      		<td>URL</td>
+		      		<td><input name="link" class="form-control" placeholder="URL" >  </td>
+		      	</tr>	
+		      				      	
+		      	<tr>
+		      		<td>广告图片</td>
+		      		<td>
+						<table>
+							<tr>
+								<td><input type="file" name="image" id="file" /></td>
+							</tr>						
+						</table>
+		      		</td>
+		      	</tr>	      
+		      	<tr>
+		      		<td>是否显示</td>
+		      		<td>
+		      		   <input type="radio" name="is_show" value="y" class="icheckbox_square-blue" checked>显示
+					   <input type="radio" name="is_show" value='n' class="icheckbox_square-blue" >不显示
+		      		</td>
+		      	</tr>  	
+			 </table>				
+			
+		</div>
+		<div class="modal-footer">						
+			<input type="submit" value="保存" class="btn btn-success">
+			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+		</div>
+		</form>
+	  </div>
+	</div>
+</div>
+
+
 <!-- 编辑窗口 -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" >
@@ -98,63 +154,78 @@
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<h3 id="myModalLabel">广告编辑</h3>
 		</div>
+		<form action="" method="post" enctype="multipart/form-data">
+		@csrf
 		<div class="modal-body">							
 			
 			<table class="table table-bordered table-striped"  width="800px">
-				<tr>
-		      		<td>广告分类</td>
-		      		<td>
-		      			<select class="form-control" >
-		                </select>
-		      		</td>
-		      	</tr>
+				
 		      	<tr>
 		      		<td>标题</td>
-		      		<td><input  class="form-control" placeholder="标题" >  </td>
+		      		<td><input name="title" class="form-control" placeholder="标题" >  </td>
 		      	</tr>
 			    <tr>
 		      		<td>URL</td>
-		      		<td><input  class="form-control" placeholder="URL" >  </td>
+		      		<td><input name="link" class="form-control" placeholder="URL" >  </td>
 		      	</tr>	
-		      	<tr>
-		      		<td>排序</td>
-		      		<td><input  class="form-control" placeholder="排序" >  </td>
-		      	</tr>			      	
+		      				      	
 		      	<tr>
 		      		<td>广告图片</td>
 		      		<td>
 						<table>
 							<tr>
-								<td>
-								<input type="file" id="file" />				                
-					                <button class="btn btn-primary" type="button" >
-				                   		上传
-					                </button>	
-					            </td>
-								<td>
-									<img  src="" width="200px" height="100px">
-								</td>
+								<td><input type="file" name="image" id="file" /></td>
 							</tr>						
 						</table>
 		      		</td>
 		      	</tr>	      
 		      	<tr>
-		      		<td>是否有效</td>
+		      		<td>是否显示</td>
 		      		<td>
-		      		   <input type="checkbox" class="icheckbox_square-blue" >
+		      		   <input type="radio" name="is_show" value="y" class="icheckbox_square-blue" >显示
+					   <input type="radio" name="is_show" value='n' class="icheckbox_square-blue" >不显示
 		      		</td>
 		      	</tr>  	
 			 </table>				
 			
 		</div>
 		<div class="modal-footer">						
-			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+			<input type="submit" value="保存" class="btn btn-success">
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
+		</form>
 	  </div>
 	</div>
 </div>
-
+@if (session('status'))
+    <script>alert( '{{ session('status') }}');</script>
+@endif
 </body>
 
 </html>
+<script>
+	$(".editAd").click(function(){
+
+		var id = $(this).val();	
+			
+		$.ajax({
+			type: 'GET',
+			url: '/ad/getAdByAjax?id='+id,
+			dataType: 'json',
+			success: function(data){
+
+				$("#editModal").find("input[name=title]").val(data.title);
+				$("#editModal").find("input[name=link]").val(data.link);
+				for(var i=0;i<$("#editModal").find("input[name=is_show]").length;i++){
+					if($("#editModal").find("input[name=is_show]")[i].value == data.is_show){
+						$("#editModal").find("input[name=is_show]")[i].checked = 'checked';
+					}
+				}
+				if($("#editModal").find("input[name=is_show]").val() == data.is_show){
+					$("#editModal").find("input[name=is_show]").cheak = 'checked';
+				}
+				$("#editModal").find("form").attr("action","/ad/editAd?id="+id);
+			}
+		})
+	})
+</script>
