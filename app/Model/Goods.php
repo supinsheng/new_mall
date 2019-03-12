@@ -11,6 +11,7 @@ class Goods extends Model
 {
     protected $table = 'goods';
     public $timestamps = false;
+    
     // 钩子函数
     private function _before_write($req){
 
@@ -77,10 +78,11 @@ class Goods extends Model
             return back()->with('status','添加失败，数据填写不完整！');
         }
 
-        if($req->goods_name != ''){
+        if($req->goods_name != '' && $req->goods_price != ''){
 
             $id = DB::table('goods')->insertGetId([
                 'goods_name'=>$req->goods_name,
+                'price'=>$req->goods_price,
                 'describe'=>$req->describe,
                 'logo'=>$logo['logo'],
                 'sm_logo'=>$logo['sm_logo'],
@@ -216,7 +218,7 @@ class Goods extends Model
     // 执行编辑
     public function doEdit($req){
 
-        if($req->goods_name != null){
+        if($req->goods_name != null && $req->goods_price != null){
 
             $good = Goods::find($_GET['id']);
             
@@ -235,6 +237,7 @@ class Goods extends Model
             }
 
             $good->goods_name = $req->goods_name;
+            $good->price = $req->goods_price;
             $good->describe = $req->describe;
             $good->cat1_id = $req->cat1_id;
             $good->cat2_id = $req->cat2_id;

@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 use App\Libs\Uploader;
 use DB;
 
@@ -18,9 +19,21 @@ class Brand extends Model
         $upload = Uploader::make();
         $logo = '/uploads/'.$upload->upload('logo','brand');
 
-        $num = DB::insert('INSERT INTO nm_brand(brand_name,logo) VALUES(?,?)',[$_POST['brand_name'],$logo]);
+        $id = DB::table('brand')->insertGetId([
+            'brand_name'=> $_POST['brand_name'],
+            'logo'=> $logo,
+        ]); 
        
-        if($num){
+        if($id){
+
+            $data = [
+                'logo'=> $logo,
+                'id'=> $id,
+                'table'=> 'nm_brand',
+                'column'=> 'logo'
+            ];
+
+            Redis::lpush('new_mall:qiniu',serialize($data));
             return redirect('/admin/brand')->with('status', '保存成功！');
         }
     }

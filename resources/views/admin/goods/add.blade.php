@@ -57,6 +57,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="label">商品价格</td>
+                    <td>
+                       ￥ <input type='text' size="10" name='goods_price'> 元
+                    </td>
+                </tr>
+                <tr>
                     <td class="label">LOGO</td>
                     <td>
                         <input type='file' class="clearfix" id="logo" size="80" name='logo'>

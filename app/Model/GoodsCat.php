@@ -8,6 +8,26 @@ use App\Model\Goods;
 
 class GoodsCat extends Model
 {
+    protected $table = 'goods_category';
+    public $timestamps = false;
+
+    public function subMenuLevel2() {
+        return $this->hasMany('App\Model\GoodsCat','parent_id','id')
+            ->select(['id','cat_name','parent_id']);
+    }
+
+    public function subMenuLevel1() {
+        return $this->hasMany('App\Model\GoodsCat','parent_id','id')
+            ->select(['id','cat_name','parent_id'])
+            ->with('subMenuLevel2');
+    }
+
+
+    public static function getCategoryMenu() {
+        return GoodsCat::where('parent_id',0)
+            ->with('subMenuLevel1')
+            ->get(['id','cat_name']);
+    }
     // 添加商品分类
     public function saveCat($req){
 

@@ -16,7 +16,6 @@ define("ROOT",base_path().'/');
 //     return view('welcome');
 // });
 
-Route::get('/','Home\IndexController@index');
 
 // 后台登录
 Route::get('/admin/login','Admin\LoginController@login');
@@ -131,3 +130,30 @@ Route::group(['middleware'=>['Admin']],function(){
     // 删除文章
     Route::get('/article/delArticle','Admin\ArticleController@delArticle');
 });
+
+// 前台首页
+Route::get('/','Home\IndexController@index');
+
+// 前台商品列表页
+Route::get('/home/search','Home\IndexController@search');
+// 商品详情页
+Route::get('/home/item','Home\IndexController@item');
+// 加入购物车
+Route::get('/goods/addCart','Home\GoodsController@addCart');
+// 购物车页面
+Route::get('/goods/cart','Home\GoodsController@cart');
+Route::get('/goods/orders','Home\GoodsController@orders');
+
+// axios修改订单商品数量
+Route::get('/goods/updateCount','Home\GoodsController@updateCount');
+// axios修改订单商品是否选中
+Route::get('/goods/updateCheck','Home\GoodsController@updateCheck');
+// 订单提交微信支付
+Route::get('/goods/wxpay','Home\GoodsController@wxpay');
+// 微信支付二维码
+Route::get('/goods/qrcode','Home\GoodsController@qrcode');
+
+// 订单提交支付宝支付
+Route::get('/alipay/index','Home\AlipayController@index');
+Route::get('/alipay/notify','Home\AlipayController@notify');
+Route::get('/alipay/return','Home\AlipayController@return');
